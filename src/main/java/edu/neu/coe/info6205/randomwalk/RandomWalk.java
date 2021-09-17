@@ -20,7 +20,8 @@ public class RandomWalk {
      * @param dy the distance he moves in the y direction
      */
     private void move(int dx, int dy) {
-        // TO BE IMPLEMENTED
+        this.x = this.x + dx;
+        this.y = this.y + dy;
     }
 
     /**
@@ -29,7 +30,11 @@ public class RandomWalk {
      * @param m the number of steps the drunkard takes
      */
     private void randomWalk(int m) {
-        // TO BE IMPLEMENTED
+        this.x = 0;
+        this.y = 0;
+        for (int i=0; i<m; i++) {
+            randomMove();
+        }
     }
 
     /**
@@ -48,8 +53,7 @@ public class RandomWalk {
      * @return the (Euclidean) distance from the origin to the current position.
      */
     public double distance() {
-        // TO BE IMPLEMENTED
-        return 0;
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
     }
 
     /**
@@ -70,13 +74,12 @@ public class RandomWalk {
     }
 
     public static void main(String[] args) {
-        if (args.length == 0)
-            throw new RuntimeException("Syntax: RandomWalk steps [experiments]");
-        int m = Integer.parseInt(args[0]);
-        int n = 30;
-        if (args.length > 1) n = Integer.parseInt(args[1]);
-        double meanDistance = randomWalkMulti(m, n);
-        System.out.println(m + " steps: " + meanDistance + " over " + n + " experiments");
+        int[] arr = {4,5,6,7,8,9,10,11,12,13,14,15};
+        for (int m : arr) {
+            int n = 20;
+            double meanDistance = randomWalkMulti(m, n);
+            System.out.println(m + " steps: " + meanDistance + " over " + n + " experiments");
+        }
     }
 
 }
