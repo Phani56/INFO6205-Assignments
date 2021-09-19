@@ -74,11 +74,18 @@ public class RandomWalk {
     }
 
     public static void main(String[] args) {
-        int[] arr = {4,5,6,7,8,9,10,11,12,13,14,15};
+        int[] arr = {4,8,10,15,20,25,30,35,40,45,50,60,70,80,90,100,200,300,400,500,750,1000}; // number of steps taken by drunkard each time
         for (int m : arr) {
-            int n = 20;
-            double meanDistance = randomWalkMulti(m, n);
-            System.out.println(m + " steps: " + meanDistance + " over " + n + " experiments");
+            int n = 30;
+            String avgMeanDistances = "";
+            for (int i=0; i<15; i++) { //calculate and concatenate all 15 mean values into avgMeanDistances string
+                if (i==0) {
+                    avgMeanDistances = avgMeanDistances + " " + randomWalkMulti(m, n);
+                } else {
+                    avgMeanDistances = avgMeanDistances + ", " + randomWalkMulti(m, n);
+                }
+            }
+            System.out.println(m + " steps over " + n + " experiments for 15 times: " + avgMeanDistances);
         }
     }
 
