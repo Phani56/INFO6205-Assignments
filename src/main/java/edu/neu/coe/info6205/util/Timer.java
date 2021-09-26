@@ -59,13 +59,13 @@ public class Timer {
         T value = supplier.get();
         pause();
         for (int i=0; i<n; i++) {
-            resume();
             if (preFunction!=null) value = preFunction.apply(value);
+            resume();
             U result = function.apply(value);
-            if (postFunction!=null) postFunction.accept(result);
             pauseAndLap();
+            if (postFunction!=null) postFunction.accept(result);
         }
-        return stop();
+        return meanLapTime();
     }
 
     /**
