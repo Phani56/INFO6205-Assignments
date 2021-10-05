@@ -176,7 +176,8 @@ public class UF_HWQUPC implements UF {
         if (i == j) return;
         if (height[i] < height[j]) {
             updateParent(i, j);
-            updateHeight(j, i);
+        } else if (height[i] > height[j]){
+            updateParent(j, i);
         } else {
             updateParent(j, i);
             updateHeight(i, j);
