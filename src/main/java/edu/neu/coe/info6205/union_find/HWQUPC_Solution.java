@@ -20,8 +20,10 @@ public class HWQUPC_Solution{
     }
 
     public static void main(String[] args) {
-        for (int i=100; i<110; i++) {
-            System.out.println(count(i));
+        int n = 500;
+        for (int i=1; i<10; i++) {
+            n = n*2;
+            System.out.println("Pairs needed for " + n + " objects: " + count(n));
         }
     }
 }
