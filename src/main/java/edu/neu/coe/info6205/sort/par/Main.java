@@ -17,15 +17,14 @@ public class Main {
 
         // default values in case command line arguments are not passed
         configuration.put("c", 2000); // cutoff mark for system sort
-        configuration.put("t", 7); // thread count
         configuration.put("s", 2000000); // size of the array
 
         processArgs(args);
         ArrayList<Long> timeList;
 
         ParSort.cutoff = configuration.get("c");
-
-        timeList = computeSortTime();
+        if (configuration.containsKey("t")) timeList = computeSortTimeVaryingCutoff();
+        else timeList = computeSortTimeVaryingThreadCount();
         try {
             FileOutputStream fis = new FileOutputStream("./src/results/parallelsort/co_" + ParSort.cutoff + "as_" + configuration.get("s") + "result.csv");
             OutputStreamWriter isr = new OutputStreamWriter(fis);
@@ -44,13 +43,38 @@ public class Main {
         }
     }
 
-    private static ArrayList<Long> computeSortTime() {
+    private static ArrayList<Long> computeSortTimeVaryingThreadCount() {
         Random random = new Random();
         int[] array = new int[configuration.get("s")];
         ArrayList<Long> timeList = new ArrayList<>();
         for (int k = 0; k < 11; k++) {
             int threadCount = (int) Math.pow(2,k);
             ParSort.forkJoinPool = new ForkJoinPool(threadCount);
+            long time;
+            long startTime = System.currentTimeMillis();
+            for (int t = 0; t < 10; t++) {
+                for (int i = 0; i < array.length; i++) array[i] = random.nextInt(10000000);
+                ParSort.sort(array, 0, array.length);
+            }
+            long endTime = System.currentTimeMillis();
+            time = (endTime - startTime);
+            timeList.add(time);
+
+            System.out.println("cutoff：" + ParSort.cutoff + "  :threads：" + threadCount + "  :arraySize：" + configuration.get("s") + "  :Time:  " + time + "ms");
+
+        }
+        return timeList;
+    }
+
+    private static ArrayList<Long> computeSortTimeVaryingCutoff() {
+        Random random = new Random();
+        int[] array = new int[configuration.get("s")];
+        ArrayList<Long> timeList = new ArrayList<>();
+        int threadCount = configuration.get("t");
+        ParSort.cutoff = configuration.get("s")/2 - 600000;
+        for (int k = 0; k < 10; k++) {
+            ParSort.cutoff = ParSort.cutoff + 100000;
+            ParSort.forkJoinPool = new ForkJoinPool(32);
             long time;
             long startTime = System.currentTimeMillis();
             for (int t = 0; t < 10; t++) {
